@@ -8,7 +8,9 @@ import {
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto'
 
-import { SignIn } from './src/screens/sign-in'
+import { AuthProvider } from './src/contexts/auth-context'
+
+import { Routes } from './src/routes/routes'
 
 import { theme } from './src/styles/theme'
 
@@ -41,7 +43,9 @@ export default function App() {
           translucent
         />
 
-        <SignIn />
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
       </Box>
     </NativeBaseProvider>
   )

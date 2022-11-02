@@ -3,6 +3,7 @@
     "name": "NLW Copa",
     "slug": "nlw-copa",
     "version": "1.0.0",
+    "scheme": "nlw-copa",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
