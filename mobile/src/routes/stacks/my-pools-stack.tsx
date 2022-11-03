@@ -8,7 +8,10 @@ const { Navigator, Screen } = createNativeStackNavigator()
 
 export function MyPoolsStack() {
   return (
-    <Navigator screenOptions={{ headerShown: false }}>
+    <Navigator
+      initialRouteName="myPools"
+      screenOptions={{ headerShown: false }}
+    >
       <Screen name="myPools" component={MyPools} />
       <Screen name="searchPoolByCode" component={SearchPoolByCode} />
       <Screen name="pool" component={Pool} />

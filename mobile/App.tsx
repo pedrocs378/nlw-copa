@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import * as SplashScreen from 'expo-splash-screen'
+import { IntlProvider } from 'react-intl'
 import { Box, NativeBaseProvider, StatusBar } from 'native-base'
 import {
   useFonts,
@@ -13,6 +14,13 @@ import { AuthProvider } from './src/contexts/auth-context'
 import { Routes } from './src/routes/routes'
 
 import { theme } from './src/styles/theme'
+
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
+import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/locale-data/pt'
 
 const fonts = {
   Roboto_400Regular,
@@ -43,9 +51,11 @@ export default function App() {
           translucent
         />
 
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
+        <IntlProvider locale="pt-BR">
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </IntlProvider>
       </Box>
     </NativeBaseProvider>
   )

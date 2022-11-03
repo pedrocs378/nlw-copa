@@ -17,6 +17,7 @@ export function AppRoutes() {
 
   return (
     <Navigator
+      backBehavior="firstRoute"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.yellow[400],

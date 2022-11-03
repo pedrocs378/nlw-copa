@@ -13,4 +13,10 @@ export declare global {
       myPoolsStack: import('@react-navigation/native').NavigatorScreenParams<MyPoolsStackParmList>
     }
   }
+
+  type MyPoolsScreenProps<T extends keyof MyPoolsStackParmList> =
+    import('@react-navigation/native-stack').NativeStackScreenProps<
+      MyPoolsStackParmList,
+      T
+    >
 }

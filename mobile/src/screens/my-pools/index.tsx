@@ -1,14 +1,42 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { ListRenderItemInfo } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
-import { Button, Divider, Icon, VStack } from 'native-base'
+import { Button, Divider, FlatList, Icon } from 'native-base'
 
-import { Background } from '../../components'
+import { api } from '../../lib/axios'
+
+import { Background, Loader } from '../../components'
 
 import { EmptyPools } from './components/empty-pools'
 import { PoolCard } from './components/pool-card'
 
+type Participant = {
+  id: string
+  user: {
+    name: string
+    avatarUrl: string
+  }
+}
+
+type PoolData = {
+  id: string
+  code: string
+  title: string
+  participants: Participant[]
+  owner: {
+    name: string
+  }
+}
+
+type PoolsResponse = {
+  pools: PoolData[]
+}
+
 export function MyPools() {
+  const [isLoadingPools, setIsLoadingPools] = useState(false)
+  const [pools, setPools] = useState<PoolData[]>([])
+
   const navigation = useNavigation()
 
   function handleNavigateToSearchPool() {
@@ -29,6 +57,35 @@ export function MyPools() {
     [navigation],
   )
 
+  function renderPoolItem({ item }: ListRenderItemInfo<PoolData>) {
+    return (
+      <PoolCard
+        onPress={() => handleNavigateToPool(item.id)}
+        pool={{
+          title: item.title,
+          ownerName: item.owner.name,
+          participants: item.participants,
+        }}
+      />
+    )
+  }
+
+  useEffect(() => {
+    async function loadPools() {
+      try {
+        setIsLoadingPools(true)
+
+        const response = await api.get<PoolsResponse>('/pools')
+
+        setPools(response.data.pools)
+      } finally {
+        setIsLoadingPools(false)
+      }
+    }
+
+    loadPools()
+  }, [])
+
   return (
     <Background title="Meus bolões">
       <Button
@@ -40,14 +97,16 @@ export function MyPools() {
 
       <Divider my="4" />
 
-      <EmptyPools />
-
-      <VStack space="3">
-        <PoolCard onPress={() => handleNavigateToPool('123')} />
-        <PoolCard />
-        <PoolCard />
-        <PoolCard />
-      </VStack>
+      {isLoadingPools ? (
+        <Loader />
+      ) : (
+        <FlatList
+          data={pools}
+          keyExtractor={(pool) => pool.id}
+          renderItem={renderPoolItem}
+          ListEmptyComponent={<EmptyPools />}
+        />
+      )}
     </Background>
   )
 }
