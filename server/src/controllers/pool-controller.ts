@@ -25,11 +25,11 @@ class PoolController {
             id: true,
             user: {
               select: {
+                name: true,
                 avatarUrl: true
               }
             }
-          },
-          take: 4
+          }
         },
         owner: {
           select: {
