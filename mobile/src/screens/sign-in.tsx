@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/auth-context'
 import Logo from '../assets/logo.svg'
 
 export function SignIn() {
-  const { signIn } = useAuth()
+  const { isUserLoading, signIn } = useAuth()
 
   async function handleSignIn() {
     await signIn()
@@ -20,6 +20,7 @@ export function SignIn() {
         colorScheme="red"
         leftIcon={<Icon as={Fontisto} name="google" />}
         mt="12"
+        isLoading={isUserLoading}
         onPress={handleSignIn}
       >
         Entrar com google

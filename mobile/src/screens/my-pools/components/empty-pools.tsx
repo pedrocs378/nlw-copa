@@ -5,7 +5,9 @@ export function EmptyPools() {
   const navigation = useNavigation()
 
   function handleNavigateToSearchPool() {
-    navigation.navigate('searchPoolByCode')
+    navigation.navigate('myPoolsStack', {
+      screen: 'searchPoolByCode',
+    })
   }
 
   function handleNavigateToNewPool() {

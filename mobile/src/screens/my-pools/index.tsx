@@ -12,13 +12,19 @@ export function MyPools() {
   const navigation = useNavigation()
 
   function handleNavigateToSearchPool() {
-    navigation.navigate('searchPoolByCode')
+    navigation.navigate('myPoolsStack', {
+      screen: 'searchPoolByCode',
+    })
   }
 
   const handleNavigateToPool = useCallback(
     (poolId: string) => {
-      console.log(poolId)
-      navigation.navigate('pool')
+      navigation.navigate('myPoolsStack', {
+        screen: 'pool',
+        params: {
+          poolId,
+        },
+      })
     },
     [navigation],
   )

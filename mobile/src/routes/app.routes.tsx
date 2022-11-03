@@ -19,7 +19,7 @@ export function AppRoutes() {
     <Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.yellow[500],
+        tabBarActiveTintColor: colors.yellow[400],
         tabBarInactiveTintColor: colors.gray[300],
         tabBarLabelPosition: 'beside-icon',
         tabBarStyle: tabBarStyles({
@@ -30,7 +30,7 @@ export function AppRoutes() {
           bg: 'gray.700',
         }),
         tabBarLabelStyle: tabBarLabelStyles({
-          fontSize: 'md',
+          fontSize: 'sm',
           fontWeight: 'medium',
         }),
       }}
@@ -39,7 +39,7 @@ export function AppRoutes() {
         name="newPool"
         component={NewPool}
         options={{
-          title: 'Novo Bolão',
+          title: 'Novo bolão',
           tabBarIcon: ({ color }) => (
             <Icon as={AntDesign} name="pluscircleo" color={color} size="md" />
           ),
@@ -49,7 +49,7 @@ export function AppRoutes() {
         name="myPoolsStack"
         component={MyPoolsStack}
         options={{
-          title: 'Meus Bolões',
+          title: 'Meus bolões',
           tabBarIcon: ({ color }) => (
             <Icon
               as={MaterialIcons}

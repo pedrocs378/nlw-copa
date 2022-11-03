@@ -1,7 +1,16 @@
 import { useState } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Button, Divider, ScrollView, Text, VStack } from 'native-base'
+import { Octicons } from '@expo/vector-icons'
+import {
+  Button,
+  Divider,
+  Icon,
+  IconButton,
+  ScrollView,
+  Text,
+  VStack,
+} from 'native-base'
 
 import { Background } from '../../components'
 
@@ -9,6 +18,7 @@ import { PoolHeader } from './components/pool-header'
 import { RankingCard } from './components/ranking-card'
 import { NoParticipantsMessage } from './components/no-participants-message'
 import { GuessCard } from './components/guess-card'
+import { TabButton } from './components/tab-button'
 
 type PoolTab = 'guesses' | 'ranking'
 
@@ -19,7 +29,13 @@ export function Pool() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Background title="Bolao do Pedrao" onBack={navigation.goBack}>
+      <Background
+        title="Bolao do Pedrao"
+        onBack={navigation.goBack}
+        RightButtonElement={
+          <IconButton icon={<Icon as={Octicons} name="share" />} />
+        }
+      >
         <ScrollView>
           <PoolHeader />
 
@@ -28,26 +44,18 @@ export function Pool() {
           <NoParticipantsMessage />
 
           <Button.Group bg="gray.700" p="1" rounded="sm">
-            <Button
-              flex="1"
-              _text={{ textTransform: 'none' }}
-              size="sm"
-              colorScheme="gray"
-              variant={poolTab === 'guesses' ? 'subtle' : 'unstyled'}
+            <TabButton
+              isActive={poolTab === 'guesses'}
               onPress={() => setPoolTab('guesses')}
             >
               Seus palpites
-            </Button>
-            <Button
-              flex="1"
-              _text={{ textTransform: 'none', fontSize: 'sm' }}
-              size="sm"
-              colorScheme="gray"
-              variant={poolTab === 'ranking' ? 'subtle' : 'unstyled'}
+            </TabButton>
+            <TabButton
+              isActive={poolTab === 'ranking'}
               onPress={() => setPoolTab('ranking')}
             >
               Ranking do grupo
-            </Button>
+            </TabButton>
           </Button.Group>
 
           {poolTab === 'guesses' && (
