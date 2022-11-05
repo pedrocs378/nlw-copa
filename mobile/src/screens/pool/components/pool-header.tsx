@@ -18,9 +18,6 @@ export function PoolHeader({ poolTitle, code, participants }: PoolHeaderProps) {
         <Text lineHeight="xl" fontSize="xs">
           Código: <Text bold>{code}</Text>
         </Text>
-        {/* <Text lineHeight="xl" fontSize="xs">
-          Criado por {poolOwner}
-        </Text> */}
       </Box>
 
       <Avatar.Group max={4} space={-2} _avatar={{ size: 'sm' }}>
