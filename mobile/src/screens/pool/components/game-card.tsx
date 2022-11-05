@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { FormattedDisplayName } from 'react-intl'
 import { Feather } from '@expo/vector-icons'
 import CountryFlag from 'react-native-country-flag'
@@ -16,6 +17,8 @@ type GameCardProps = {
   firstTeamCountryCode: string
   secondTeamCountryCode: string
   guess: Guess | null
+  isLoading?: boolean
+  onConfirmGuess?: (firstTeamPoints: number, secondTeamPoints: number) => void
 }
 
 export function GameCard({
@@ -24,11 +27,23 @@ export function GameCard({
   firstTeamCountryCode,
   secondTeamCountryCode,
   guess,
+  isLoading = false,
+  onConfirmGuess,
 }: GameCardProps) {
+  const [firstTeamPoints, setFirstTeamPoints] = useState(0)
+  const [secondTeamPoints, setSecondTeamPoints] = useState(0)
+
+  useEffect(() => {
+    if (guess) {
+      setFirstTeamPoints(guess.firstTeamPoints)
+      setSecondTeamPoints(guess.secondTeamPoints)
+    }
+  }, [guess])
+
   return (
     <CardPressable flexDir="column" mb="3">
       <Heading fontSize="sm">
-        <FormattedDisplayName type="region" value={firstTeamCountryCode} /> Vs.{' '}
+        <FormattedDisplayName type="region" value={firstTeamCountryCode} /> vs.{' '}
         <FormattedDisplayName type="region" value={secondTeamCountryCode} />
       </Heading>
 
@@ -44,13 +59,15 @@ export function GameCard({
         <HStack space="3" alignItems="center">
           <Input
             w="9"
-            px="3"
+            px="2"
             size="sm"
             variant="filled"
             keyboardType="number-pad"
+            returnKeyType="next"
             maxLength={2}
-            defaultValue="0"
             isReadOnly={!!guess}
+            value={String(firstTeamPoints)}
+            onChangeText={(value) => setFirstTeamPoints(Number(value))}
           />
 
           <CountryFlag isoCode={firstTeamCountryCode} size={24} />
@@ -63,13 +80,15 @@ export function GameCard({
 
           <Input
             w="9"
-            px="3"
+            px="2"
             size="sm"
             variant="filled"
-            keyboardType="number-pad"
+            keyboardType="numeric"
+            returnKeyType="send"
             maxLength={2}
-            defaultValue="0"
             isReadOnly={!!guess}
+            value={String(secondTeamPoints)}
+            onChangeText={(value) => setSecondTeamPoints(Number(value))}
           />
         </HStack>
       </Flex>
@@ -81,6 +100,8 @@ export function GameCard({
           colorScheme={hasFinished ? 'gray' : 'green'}
           isDisabled={hasFinished}
           rightIcon={!hasFinished && <Icon as={Feather} name="check" />}
+          isLoading={isLoading}
+          onPress={() => onConfirmGuess?.(firstTeamPoints, secondTeamPoints)}
         >
           {hasFinished ? 'Tempo esgotado' : 'Confirmar palpite'}
         </Button>

@@ -48,7 +48,7 @@ export function Background({
         {RightButtonElement ?? <HeaderEmptyBox />}
       </Flex>
 
-      <Box flex="1" px="5" py="8" {...rest}>
+      <Box flex="1" px="5" py="6" {...rest}>
         {children}
       </Box>
     </Box>

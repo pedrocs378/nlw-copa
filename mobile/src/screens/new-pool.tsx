@@ -17,7 +17,14 @@ export function NewPool() {
   const toast = useToast()
 
   async function handleCreatePool() {
-    if (!poolName) return
+    if (!poolName.trim()) {
+      return toast.show({
+        title: 'Informe um nome para o seu bolão',
+        bg: 'red.400',
+        duration: 5000,
+        placement: 'top',
+      })
+    }
 
     try {
       setIsSubmitingPool(true)
@@ -36,6 +43,7 @@ export function NewPool() {
 
       toast.show({
         title: `Bolão criado e o código "${code}" foi copiado para sua área de transferência`,
+        bg: 'green.400',
         duration: 5000,
         placement: 'top',
       })
@@ -45,6 +53,7 @@ export function NewPool() {
 
         toast.show({
           title: message ?? 'Não foi possivel criar o bolão',
+          bg: 'red.400',
           duration: 5000,
           placement: 'top',
         })

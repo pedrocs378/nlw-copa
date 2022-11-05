@@ -3,20 +3,12 @@ import { Avatar, Box, Heading, Text } from 'native-base'
 
 import { CardPressable } from '../../../components'
 
-type Participant = {
-  id: string
-  user: {
-    name: string
-    avatarUrl: string
-  }
-}
-
 type PoolCardProps = {
   onPress?: () => void
   pool: {
     title: string
     ownerName: string
-    participants: Participant[]
+    participants: API.Participant[]
   }
 }
 

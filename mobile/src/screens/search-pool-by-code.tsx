@@ -16,7 +16,14 @@ export function SearchPoolByCode() {
   const toast = useToast()
 
   async function handleJoinOnPool() {
-    if (!code) return
+    if (!code.trim()) {
+      return toast.show({
+        title: 'Informe um código para buscar o bolão',
+        duration: 5000,
+        bg: 'red.400',
+        placement: 'top',
+      })
+    }
 
     try {
       setIsJoining(true)
@@ -26,12 +33,16 @@ export function SearchPoolByCode() {
       })
 
       toast.show({
-        title:
-          'Agora você está participando deste bolão. Vá para a aba "Meus bolões para visualizar"',
+        title: 'Agora você está participando deste bolão.',
         duration: 5000,
         placement: 'top',
+        bg: 'green.400',
       })
+
+      navigation.goBack()
     } catch (error) {
+      setIsJoining(false)
+
       if (error instanceof AxiosError) {
         const message = error.response.data.message
 
@@ -39,10 +50,9 @@ export function SearchPoolByCode() {
           title: message ?? 'Não foi possivel se juntar a esse bolão',
           duration: 5000,
           placement: 'top',
+          bg: 'red.400',
         })
       }
-    } finally {
-      setIsJoining(false)
     }
   }
 

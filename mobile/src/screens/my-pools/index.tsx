@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ListRenderItemInfo } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 import { Button, Divider, FlatList, Icon } from 'native-base'
 
@@ -11,33 +11,16 @@ import { Background, Loader } from '../../components'
 import { EmptyPools } from './components/empty-pools'
 import { PoolCard } from './components/pool-card'
 
-type Participant = {
-  id: string
-  user: {
-    name: string
-    avatarUrl: string
-  }
-}
-
-type PoolData = {
-  id: string
-  code: string
-  title: string
-  participants: Participant[]
-  owner: {
-    name: string
-  }
-}
-
 type PoolsResponse = {
-  pools: PoolData[]
+  pools: API.Pool[]
 }
 
 export function MyPools() {
   const [isLoadingPools, setIsLoadingPools] = useState(false)
-  const [pools, setPools] = useState<PoolData[]>([])
+  const [pools, setPools] = useState<API.Pool[]>([])
 
   const navigation = useNavigation()
+  const isFocused = useIsFocused()
 
   function handleNavigateToSearchPool() {
     navigation.navigate('myPoolsStack', {
@@ -57,7 +40,7 @@ export function MyPools() {
     [navigation],
   )
 
-  function renderPoolItem({ item }: ListRenderItemInfo<PoolData>) {
+  function renderPoolItem({ item }: ListRenderItemInfo<API.Pool>) {
     return (
       <PoolCard
         onPress={() => handleNavigateToPool(item.id)}
@@ -83,8 +66,10 @@ export function MyPools() {
       }
     }
 
-    loadPools()
-  }, [])
+    if (isFocused) {
+      loadPools()
+    }
+  }, [isFocused])
 
   return (
     <Background title="Meus bolões">
@@ -105,6 +90,7 @@ export function MyPools() {
           keyExtractor={(pool) => pool.id}
           renderItem={renderPoolItem}
           ListEmptyComponent={<EmptyPools />}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </Background>

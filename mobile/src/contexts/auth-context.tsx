@@ -12,15 +12,12 @@ import * as WebBrowser from 'expo-web-browser'
 
 import { api } from '../lib/axios'
 
+import { GOOGLE_CLIENT_ID } from '../utils/constants'
+
 WebBrowser.maybeCompleteAuthSession()
 
-type User = {
-  name: string
-  avatarUrl: string
-}
-
 type AuthContextData = {
-  user: User | undefined
+  user: API.User | undefined
   isUserLoading: boolean
   isAppLoading: boolean
 
@@ -43,11 +40,10 @@ const AuthContext = createContext({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAppLoading, setIsAppLoading] = useState(false)
   const [isUserLoading, setIsUserLoading] = useState(false)
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<API.User>()
 
   const [, , prompAsync] = Google.useAuthRequest({
-    clientId:
-      '592360545546-cjf8n837kooit03skkdka6eduqg4eoq8.apps.googleusercontent.com',
+    clientId: GOOGLE_CLIENT_ID,
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     scopes: ['profile', 'email'],
   })
